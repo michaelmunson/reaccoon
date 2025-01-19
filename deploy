@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+const fs = require("fs");
+const {execSync} = require("child_process");
+
+/**
+ * @param {string} version - Either a semantic version string (e.g. "1.2.3") or one of: "major", "minor", "patch"
+ */
+function incrementVersion(version="patch"){
+  const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
+  const [major, minor, patch] = packageJson.version.split(".").map(Number);
+  if(version === "major"){
+    packageJson.version = `${major + 1}.0.0`;
+  } else if(version === "minor"){
+    packageJson.version = `${major}.${minor + 1}.0`;
+  } else if(version === "patch"){
+    packageJson.version = `${major}.${minor}.${patch + 1}`;
+  } else {
+    packageJson.version = version;
+  }
+  fs.writeFileSync("./package.json", JSON.stringify(packageJson, null, 2));
+  return packageJson.version;
+}
+
+function createDocs(){
+  execSync("npm run create-docs");
+}
+
+function publish(){
+  execSync("npm publish");
+}
+
+function push(version, message){
+  execSync(`git add . && git commit -m '${version}${message}' && git push`);
+}
+
+(() => {
+  const version = process.argv[2] || "patch";
+  const message = process.argv[3] ? ` - ${process.argv[3]}` : "";
+  if (version !== "major" && version !== "minor" && version !== "patch" && version.split(".").length !== 3) {
+    console.error("Invalid version argument. Must be one of: major, minor, patch, or x.x.x");
+    process.exit(1);
+  }
+  const newVersion = incrementVersion(version);
+  createDocs();
+  publish();
+  push(newVersion, message);
+})();

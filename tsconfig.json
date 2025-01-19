@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["es2020", "dom"],
+    "jsx": "preserve",
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
