@@ -32,16 +32,7 @@ export type UseAsyncResult<T, I, Args extends any[] = any[]> = (
  * - `error`: Error object if status is 'REJECTED', undefined otherwise
  * - `caller`: Function to manually trigger the async operation
  * - `setResult`: Function to manually update the result value
- * @example
- * ```tsx
- * const async1 = useAsync(undefined, () => new Promise((resolve) => {
- *   setTimeout(() => resolve('Hello World'), 2500);
- * }), { init: true });
- * 
- * if (async1.status === 'PENDING') return <h1>Loading...</h1>;
- * if (async1.status === 'FULFILLED') return <h1>{async1.result}</h1>;
- * ```
- * 
+
  * @example
  * ```tsx
  * const async1 = useAsync(undefined, () => new Promise((resolve) => {
