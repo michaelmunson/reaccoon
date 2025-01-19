@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { UseAsyncRequestStatus } from "../types";
 import { getConfig } from "../config";
+
+
+
+export type UseAsyncRequestStatus = 'IDLE' | 'PENDING' | 'FULFILLED' | 'REJECTED';
+
 
 type Caller<T, Args extends any[] = any[]> = (...args:Args) => Promise<T | Error>;
 type Config = Partial<{
