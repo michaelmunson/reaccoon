@@ -1,7 +1,28 @@
 import { setConfig } from "./config";
 
 export * from "./hooks";
+export * from "./types";
 
-export default class Reaccoon {
-  static configure = setConfig;
+const Reaccoon = {
+  /**
+   * @description Configure the library
+   * @param config The configuration object
+   * @returns {Config} the configuration object
+   * @example
+   * Reaccoon.configure({
+   *   hooks: {
+   *     useAsync: {
+   *       onError: (error:Error) => {
+   *         console.error(error);
+   *       }
+   *     },
+   *     useFilter: {
+   *       threshold: 0.5
+   *     }
+   *   }
+   * })
+   */
+  configure: setConfig,
 }
+
+export default Reaccoon;

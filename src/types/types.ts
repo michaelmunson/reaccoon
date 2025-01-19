@@ -1,2 +1,2 @@
 
-export type RequestStatus = 'IDLE' | 'PENDING' | 'FULFILLED' | 'REJECTED';
+export type UseAsyncRequestStatus = 'IDLE' | 'PENDING' | 'FULFILLED' | 'REJECTED';

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RequestStatus } from "../types";
+import { UseAsyncRequestStatus } from "../types";
 import { getConfig } from "../config";
 
 type Caller<T, Args extends any[] = any[]> = (...args:Args) => Promise<T | Error>;
@@ -43,7 +43,7 @@ export type UseAsyncResult<T, I, Args extends any[] = any[]> = (
  * ```
  */
 export function useAsync<T, I=T, Args extends any[] = any[]>(initial:I, asyncFn:(...args:Args) => Promise<T>, config:Config={}) : UseAsyncResult<T,I,Args> {
-  const [status, setStatus] = useState<RequestStatus>('IDLE');
+  const [status, setStatus] = useState<UseAsyncRequestStatus>('IDLE');
   const [result, setResult] = useState<T | I>(initial);
   const [error, setError] = useState<Error>();
 
