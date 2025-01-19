@@ -4,16 +4,25 @@ type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-type Config = typeof CONFIG;
+type Config = {
+  hooks: {
+    useAsync: {
+      onError: (error: Error) => void;
+    };
+    useFilter: {
+      fuseConfig: Omit<IFuseOptions<any>, 'keys'>;
+    };
+  };
+};
 
-const CONFIG = <const>{
+const CONFIG:Config = {
   hooks: {
     useAsync: {
       /**@description Callback function to handle errors */
       onError: (error: Error) => {}
     },
     useFilter: {
-      /**@description Callback function to handle errors */
+      /**@description Fuse.js configuration */
       fuseConfig: {} as Omit<IFuseOptions<any>, 'keys'>
     }
   }

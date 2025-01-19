@@ -9,6 +9,7 @@ const Reaccoon = {
    * @param config The configuration object
    * @returns {Config} the configuration object
    * @example
+   * import Reaccoon from "reaccoon";
    * Reaccoon.configure({
    *   hooks: {
    *     useAsync: {

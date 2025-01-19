@@ -23,15 +23,15 @@ export type UseAsyncResult<T, I, Args extends any[] = any[]> = (
  * @template Args The types of arguments the async function accepts
  * @param initial The initial value before the async operation completes
  * @param asyncFn The async function to execute
- * @param config Configuration options
- * @param config.init If true, calls the async function immediately on mount
- * @param config.rejectWhilePending If true, prevents calling the function while status is pending
+ * @param config
+ * * `config.init` If true, calls the async function immediately on mount
+ * * `config.rejectWhilePending` If true, prevents calling the function while status is pending
  * @returns {UseAsyncResult<T,I,Args>} Object containing:
- * - status: Current state of the async operation ('IDLE'|'PENDING'|'FULFILLED'|'REJECTED')
- * - result: The current value (initial value or successful result)
- * - error: Error object if status is 'REJECTED', undefined otherwise
- * - caller: Function to manually trigger the async operation
- * - setResult: Function to manually update the result value
+ * - `status`: Current state of the async operation ('IDLE'|'PENDING'|'FULFILLED'|'REJECTED')
+ * - `result`: The current value (initial value or successful result)
+ * - `error`: Error object if status is 'REJECTED', undefined otherwise
+ * - `caller`: Function to manually trigger the async operation
+ * - `setResult`: Function to manually update the result value
  * @example
  * ```tsx
  * const async1 = useAsync(undefined, () => new Promise((resolve) => {
@@ -40,6 +40,34 @@ export type UseAsyncResult<T, I, Args extends any[] = any[]> = (
  * 
  * if (async1.status === 'PENDING') return <h1>Loading...</h1>;
  * if (async1.status === 'FULFILLED') return <h1>{async1.result}</h1>;
+ * ```
+ * 
+ * @example
+ * ```tsx
+ * const async1 = useAsync(undefined, () => new Promise((resolve) => {
+ *   setTimeout(() => {
+ *     resolve('Hello World');
+ *   }, 2500);
+ * }) as Promise<string>, { init: true });
+ * 
+ * const async2 = useAsync(undefined, () => new Promise((_, reject) => {
+ *   setTimeout(() => {
+ *     reject(new Error('Hello World'));
+ *   }, 5000);
+ * }));
+ * 
+ * useEffect(() => {
+ *   if (async1.status === 'FULFILLED') {
+ *     async2.caller();
+ *   }
+ * }, [async1.status]);
+ * 
+ * 
+ * if (async2.status === 'PENDING') return <h1>Loading 2 ...</h1>;
+ * if (async2.status === 'REJECTED') return <h1>Error: {async2.error?.message}</h1>;
+ * if (async1.status === 'PENDING') return <h1>Loading 1 ...</h1>;
+ * if (async1.status === 'FULFILLED') return <h1>Result: {async1.result}</h1>;
+ * else return <h1>Won't Get Here</h1>;
  * ```
  */
 export function useAsync<T, I=T, Args extends any[] = any[]>(initial:I, asyncFn:(...args:Args) => Promise<T>, config:Config={}) : UseAsyncResult<T,I,Args> {
