@@ -19,7 +19,7 @@ const CONFIG:Config = {
   hooks: {
     useAsync: {
       /**@description Callback function to handle errors */
-      onError: (_: Error) => {}
+      onError: () => {}
     },
     useFilter: {
       /**@description Fuse.js configuration */
